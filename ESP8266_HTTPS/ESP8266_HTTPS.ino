@@ -14,8 +14,8 @@
 
 float calibration_factor = -50.10;
 unsigned long zero_factor =  -90709;
-const char * ssid = "huawei-2929";
-const char * password = "chefrolet";
+const char * ssid = "WIFI_MENO";
+const char * password = "WIFI_HESLO";
 const char * host = "arduino.php5.sk"; //bez https a www
 const int httpsPort = 443; //https port
 const char fingerprint[] PROGMEM = "b0 6d 7f 8c 98 78 8e 6e 0a 57 a8 2f 7e d1 40 2a 1e 3f 48 f7";
@@ -36,7 +36,7 @@ void setup() {
   Serial.println("WiFi uspesne pripojene");
   Serial.println("IP adresa: ");
   Serial.println(WiFi.localIP());
-  Serial.print("HX711 ready");
+  Serial.println("HX711 ready");
 }
 
 void loop() {
