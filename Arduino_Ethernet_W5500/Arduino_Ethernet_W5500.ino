@@ -1,6 +1,6 @@
 /*|----------------------------------|*/
 /*|Projekt: Včelárska váha           |*/
-/*|Hardvér: Arduino + Ethernet W5100 |*/
+/*|Hardvér: Arduino + Ethernet W5500 |*/
 /*|Autor: Martin Chlebovec           |*/
 /*|E-mail: martinius96@gmail.com     |*/
 /*|Web: https://arduino.php5.sk      |*/
@@ -10,7 +10,7 @@
 
 #include <avr\wdt.h>
 #include <SPI.h>
-#include <Ethernet.h>
+#include <Ethernet2.h>
 #include "HX711.h"
 
 float calibration_factor = -50.10;
