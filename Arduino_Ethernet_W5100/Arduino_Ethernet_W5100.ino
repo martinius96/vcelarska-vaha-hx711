@@ -31,7 +31,7 @@ void setup() {
     Serial.println("Failed to configure Ethernet using DHCP");
     Ethernet.begin(mac, ip);
   }
-  Serial.print("HX711 ready");
+  Serial.println("HX711 ready");
   wdt_enable(WDTO_8S);
 }
 
