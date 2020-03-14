@@ -4,8 +4,7 @@
 #define CLK  2
 HX711 scale;
 
-float calibration_factor = -50.10; //-7050 worked for my 440lb max scale setup
-
+float calibration_factor = -50.10; //KALIBRAČNÝ FAKTOR
 void setup() {
   scale.begin(DOUT, CLK);
   Serial.begin(115200);
@@ -24,9 +23,7 @@ void setup() {
 }
 
 void loop() {
-
   scale.set_scale(calibration_factor); //Adjust to this calibration factor
-
   Serial.print("Reading: ");
   Serial.print(scale.get_units(10), 2);
   Serial.print(" g"); //Change this to kg and re-adjust the calibration factor if you follow SI units like a sane person
