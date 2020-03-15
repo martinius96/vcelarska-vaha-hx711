@@ -14,8 +14,8 @@
 
 float calibration_factor = -50.10;
 unsigned long zero_factor =  -90709;
-const char * ssid = "WIFI_MENO";
-const char * password = "WIFI_HESLO";
+const char * ssid = "MENO_WIFI";
+const char * password = "HESLO_WIFI";
 const char * host = "arduino.php5.sk"; //bez https a www
 const int httpsPort = 443; //https port
 const char fingerprint[] PROGMEM = "b0 6d 7f 8c 98 78 8e 6e 0a 57 a8 2f 7e d1 40 2a 1e 3f 48 f7";
@@ -46,11 +46,19 @@ void loop() {
   WiFiClientSecure client;
   Serial.printf("Using fingerprint '%s'\n", fingerprint);
   client.setFingerprint(fingerprint);
+  String data = "hodnota=" + hodnota_odosielanie;
+  String url = "/vaha/data.php";
   if (client.connect(host, httpsPort)) {
-    String url = "/vaha/data.php?hodnota=" + hodnota_odosielanie;
-    client.print(String("GET ") + url + " HTTP/1.1\r\n" + "Host: " + host + "\r\n" + "User-Agent: NodeMCU\r\n" + "Connection: close\r\n\r\n");
-    Serial.println("Data uspesne odoslane na webserver");
-    while (client.connected()) {
+    client.println("POST " + url + " HTTP/1.0");
+    client.println("Host: " + (String)host);
+    client.println("User-Agent: ESP8266");
+    client.println("Connection: close");
+    client.println("Content-Type: application/x-www-form-urlencoded;");
+    client.print("Content-Length: ");
+    client.println(data.length());
+    client.println();
+    client.println(data);
+    Serial.println("Data uspesne odoslane na webserver"); while (client.connected()) {
       String line = client.readStringUntil('\n');
       if (line == "\r") {
         break;
