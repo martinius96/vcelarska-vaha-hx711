@@ -1,3 +1,4 @@
+
 /*|----------------------------------|*/
 /*|Projekt: Včelárska váha           |*/
 /*|Hardvér: Arduino + Ethernet W5100 |*/
@@ -31,7 +32,7 @@ void setup() {
     Serial.println("Failed to configure Ethernet using DHCP");
     Ethernet.begin(mac, ip);
   }
-  Serial.println("HX711 ready");
+  Serial.print("HX711 ready");
   wdt_enable(WDTO_8S);
 }
 
@@ -44,24 +45,29 @@ void loop() {
   float hodnota = (scale.get_units(10), 2);
   String hodnota_odosielanie = String(hodnota);
   delay(50);
+  wdt_reset();
   if (client.connect(server, 80)) {
-    wdt_reset();
-    Serial.println("Pripojenie uspesne na webserver, vykonavam request... ");
-    client.print("GET /vaha/data.php?hodnota=");
-    client.print(hodnota_odosielanie);
-    client.println(" HTTP/1.1");
-    client.println("Host: www.arduino.php5.sk");
-    client.println("Connection: close");
-    client.println();
-    Serial.println("Data uspesne odoslane na web");
+    String data = "hodnota=" + hodnota_odosielanie;
+    String url = "/vaha/data.php";
+    if (client.connect(host, 80)) {
+      client.println("POST " + url + " HTTP/1.0");
+      client.println("Host: " + (String)host);
+      client.println("User-Agent: EthernetW5100");
+      client.println("Connection: close");
+      client.println("Content-Type: application/x-www-form-urlencoded;");
+      client.print("Content-Length: ");
+      client.println(data.length());
+      client.println();
+      client.println(data);
+      Serial.println("Data uspesne odoslane na web");
+    } else {
+      Serial.println("Pripojenie zlyhalo...");
+    }
     client.stop();
-  } else {
-    Serial.println("Pripojenie zlyhalo...");
+    scale.power_down();
+    for (int i = 0; i <= 300; i++) {
+      delay(1000);
+      wdt_reset();
+    }
+    scale.power_up();
   }
-  scale.power_down();
-  for (int i = 0; i <= 300; i++) {
-    delay(1000);
-    wdt_reset();
-  }
-  scale.power_up();
-}
