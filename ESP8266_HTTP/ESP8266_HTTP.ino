@@ -13,8 +13,8 @@
 
 float calibration_factor = -50.10;
 unsigned long zero_factor =  -90709;
-const char * ssid = "huawei-2929";
-const char * password = "chefrolet";
+const char * ssid = "WIFI_MENO";
+const char * password = "WIFI_HESLO";
 const char * host = "www.arduino.php5.sk"; //bez https a www
 const int httpPort = 80; //https port
 #define DOUT  5
@@ -43,9 +43,18 @@ void loop() {
   String hodnota_odosielanie = String(hodnota);
   delay(50);
   client.stop();
+  String data = "hodnota=" + hodnota_odosielanie;
+  String url = "/vaha/data.php";
   if (client.connect(host, httpPort)) {
-    String url = "/vaha/data.php?hodnota=" + hodnota_odosielanie;
-    client.print(String("GET ") + url + " HTTP/1.1\r\n" + "Host: " + host + "\r\n" + "User-Agent: NodeMCU\r\n" + "Connection: close\r\n\r\n");
+    client.println("POST " + url + " HTTP/1.0");
+    client.println("Host: " + (String)host);
+    client.println("User-Agent: ESP8266");
+    client.println("Connection: close");
+    client.println("Content-Type: application/x-www-form-urlencoded;");
+    client.print("Content-Length: ");
+    client.println(data.length());
+    client.println();
+    client.println(data);
     Serial.println("Data uspesne odoslane na webserver");
     while (client.connected()) {
       String line = client.readStringUntil('\n');
