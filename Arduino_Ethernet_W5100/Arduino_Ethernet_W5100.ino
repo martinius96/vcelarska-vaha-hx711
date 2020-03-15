@@ -1,4 +1,3 @@
-
 /*|----------------------------------|*/
 /*|Projekt: Včelárska váha           |*/
 /*|Hardvér: Arduino + Ethernet W5100 |*/
@@ -17,7 +16,7 @@
 float calibration_factor = -50.10;
 unsigned long zero_factor =  -90709;
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
-char server[] = "www.arduino.php5.sk";
+char* host = "www.arduino.php5.sk";
 IPAddress ip(192, 168, 1, 101);
 EthernetClient client;
 #define DOUT  3
@@ -46,28 +45,27 @@ void loop() {
   String hodnota_odosielanie = String(hodnota);
   delay(50);
   wdt_reset();
-  if (client.connect(server, 80)) {
-    String data = "hodnota=" + hodnota_odosielanie;
-    String url = "/vaha/data.php";
-    if (client.connect(host, 80)) {
-      client.println("POST " + url + " HTTP/1.0");
-      client.println("Host: " + (String)host);
-      client.println("User-Agent: EthernetW5100");
-      client.println("Connection: close");
-      client.println("Content-Type: application/x-www-form-urlencoded;");
-      client.print("Content-Length: ");
-      client.println(data.length());
-      client.println();
-      client.println(data);
-      Serial.println("Data uspesne odoslane na web");
-    } else {
-      Serial.println("Pripojenie zlyhalo...");
-    }
-    client.stop();
-    scale.power_down();
-    for (int i = 0; i <= 300; i++) {
-      delay(1000);
-      wdt_reset();
-    }
-    scale.power_up();
+  String data = "hodnota=" + hodnota_odosielanie;
+  String url = "/vaha/data.php";
+  if (client.connect(host, 80)) {
+    client.println("POST " + url + " HTTP/1.0");
+    client.println("Host: " + (String)host);
+    client.println("User-Agent: EthernetW5100");
+    client.println("Connection: close");
+    client.println("Content-Type: application/x-www-form-urlencoded;");
+    client.print("Content-Length: ");
+    client.println(data.length());
+    client.println();
+    client.println(data);
+    Serial.println("Data uspesne odoslane na web");
+  } else {
+    Serial.println("Pripojenie zlyhalo...");
   }
+  client.stop();
+  scale.power_down();
+  for (int i = 0; i <= 300; i++) {
+    delay(1000);
+    wdt_reset();
+  }
+  scale.power_up();
+}
