@@ -15,7 +15,7 @@ float calibration_factor = -50.10;
 unsigned long zero_factor =  -90709;
 const char * ssid = "WIFI_MENO";
 const char * password = "WIFI_HESLO";
-const char * host = "www.arduino.php5.sk"; //bez https a www
+const char * host = "arduino.clanweb.eu"; //bez https a www
 const int httpPort = 80; //https port
 #define DOUT  5
 #define CLK  4
