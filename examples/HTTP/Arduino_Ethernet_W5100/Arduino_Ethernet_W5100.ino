@@ -16,7 +16,7 @@
 float calibration_factor = -50.10;
 unsigned long zero_factor =  -90709;
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
-char* host = "www.arduino.php5.sk";
+char* host = "arduino.clanweb.eu";
 IPAddress ip(192, 168, 1, 101);
 EthernetClient client;
 #define DOUT  3
