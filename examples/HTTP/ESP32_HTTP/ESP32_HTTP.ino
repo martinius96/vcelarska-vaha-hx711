@@ -17,7 +17,7 @@ unsigned long zero_factor =  -90709;
 
 const char * ssid = "WIFI_MENO";
 const char * password = "WIFI_HESLO";
-const char * host = "www.arduino.php5.sk";
+const char * host = "arduino.clanweb.eu";
 const int httpPort = 80; //http port
 
 WiFiClient client;
